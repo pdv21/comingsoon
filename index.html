@@ -4,250 +4,434 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
-  <title>Sắp ra mắt</title>
+  <title>Sắp ra mắt — Lên lịch trình du lịch thông minh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f8f8f6;
-      color: #1a1a1a;
+      font-family: 'DM Sans', sans-serif;
+      background: #07111f;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 2rem;
+      overflow: hidden;
     }
 
-    .bg-grid {
+    canvas#stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    .clouds { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .cloud {
+      position: absolute;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.03);
+      filter: blur(40px);
+    }
+
+    .mountains {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .floating-cards {
       position: fixed;
       inset: 0;
+      z-index: 2;
       pointer-events: none;
-      opacity: 0.04;
-      background-image:
-        linear-gradient(#1a1a1a 1px, transparent 1px),
-        linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
-      background-size: 40px 40px;
     }
 
-    .container {
-      text-align: center;
-      max-width: 520px;
-      width: 100%;
-      position: relative;
-      z-index: 1;
-    }
-
-    .icon-wrap {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
-      background: #fff;
-      border: 1px solid #e0e0da;
+    .fcard {
+      position: absolute;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
+      backdrop-filter: blur(8px);
+      animation: floatY 6s ease-in-out infinite;
+    }
+
+    .fcard .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .fcard-1 { top: 14%; left: 5%; animation-delay: 0s; }
+    .fcard-2 { top: 22%; right: 5%; animation-delay: -2s; }
+    .fcard-3 { bottom: 22%; left: 4%; animation-delay: -4s; }
+    .fcard-4 { bottom: 28%; right: 5%; animation-delay: -1s; }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .plane-icon {
+      width: 56px; height: 56px;
+      background: rgba(93,202,165,0.12);
+      border: 1px solid rgba(93,202,165,0.25);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 1.5rem;
     }
 
-    .icon-wrap svg {
-      width: 24px;
-      height: 24px;
-      stroke: #888;
-      fill: none;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .plane-icon svg { width: 26px; height: 26px; stroke: #5DCAA5; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: 5px 16px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
     }
 
-    .label {
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      color: #999;
-      font-weight: 500;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #5DCAA5; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
 
     h1 {
-      font-size: 32px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(30px, 5.5vw, 50px);
       font-weight: 500;
-      line-height: 1.2;
+      color: #fff;
+      line-height: 1.18;
       margin-bottom: 1rem;
-      color: #1a1a1a;
     }
 
-    .subtitle {
+    h1 em { font-style: italic; color: #5DCAA5; }
+
+    .sub {
       font-size: 15px;
-      color: #666;
-      line-height: 1.7;
-      margin-bottom: 2.5rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.8;
+      max-width: 380px;
+      margin: 0 auto 2.5rem;
     }
 
-    .countdown {
+    .route {
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 8px;
       margin-bottom: 2.5rem;
       flex-wrap: wrap;
     }
 
-    .countdown-box {
-      background: #fff;
-      border: 1px solid #e0e0da;
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      min-width: 72px;
-    }
-
-    .countdown-num {
-      font-size: 28px;
-      font-weight: 500;
-      color: #1a1a1a;
-      line-height: 1;
-    }
-
-    .countdown-label {
-      font-size: 11px;
-      color: #aaa;
-      margin-top: 4px;
-    }
-
-    .email-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #efefeb;
-      border: 1px solid #e0e0da;
-      border-radius: 12px;
-      padding: 6px 6px 6px 14px;
-      max-width: 380px;
-      margin: 0 auto;
-    }
-
-    .email-row input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 14px;
-      color: #1a1a1a;
-      outline: none;
-      min-width: 0;
-    }
-
-    .email-row input::placeholder { color: #aaa; }
-
-    .email-row button {
-      background: #1a1a1a;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 16px;
+    .dest {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 7px 14px;
       font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .dest svg { width: 13px; height: 13px; stroke: #5DCAA5; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+
+    .arrow-r { color: rgba(255,255,255,0.2); font-size: 14px; }
+
+    .countdown {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .cbox {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      min-width: 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cbox::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(93,202,165,0.4), transparent);
+    }
+
+    .cnum {
+      font-size: 30px;
       font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity 0.15s;
+      color: #fff;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -1px;
     }
 
-    .email-row button:hover { opacity: 0.8; }
+    .clbl {
+      font-size: 10px;
+      color: rgba(255,255,255,0.28);
+      margin-top: 6px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
-    .msg {
+    .csep { color: rgba(255,255,255,0.15); font-size: 26px; padding-bottom: 24px; }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .feat {
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 100px;
+      padding: 7px 14px;
       font-size: 12px;
-      color: #aaa;
-      margin-top: 0.75rem;
-      min-height: 18px;
+      color: rgba(255,255,255,0.5);
     }
 
-    .msg.error { color: #c0392b; }
-    .msg.success { color: #27ae60; }
+    .feat svg { width: 13px; height: 13px; stroke: #5DCAA5; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
     @media (max-width: 480px) {
-      h1 { font-size: 24px; }
-      .countdown-num { font-size: 22px; }
-      .countdown-box { min-width: 60px; padding: 0.75rem 1rem; }
+      .fcard { display: none; }
+      .cbox { min-width: 58px; padding: 12px 12px; }
+      .cnum { font-size: 22px; }
     }
   </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
 
-  <div class="container">
-    <div class="icon-wrap">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/>
-        <path d="M17.64 15 22 10.64"/>
-        <path d="m2 2 4.5 4.5"/>
-        <path d="M9.5 6.5 11 8"/>
-        <path d="m17 2 2 2"/>
-        <path d="m14 5 3 3"/>
-        <path d="M22 8l-7-1 1 7 2-3 3 3 2-2-3-3z"/>
-      </svg>
+<canvas id="stars"></canvas>
+
+<div class="clouds">
+  <div class="cloud" style="width:500px;height:200px;top:10%;left:-10%;"></div>
+  <div class="cloud" style="width:400px;height:160px;top:60%;right:-8%;"></div>
+  <div class="cloud" style="width:300px;height:120px;bottom:15%;left:20%;"></div>
+</div>
+
+<svg class="mountains" viewBox="0 0 1440 280" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 280 L0 200 L120 130 L200 170 L320 80 L420 140 L520 60 L620 130 L700 90 L800 150 L900 70 L1000 140 L1100 100 L1200 160 L1320 90 L1440 150 L1440 280 Z" fill="rgba(255,255,255,0.025)"/>
+  <path d="M0 280 L0 230 L180 160 L280 200 L400 130 L500 175 L620 110 L720 160 L840 120 L940 170 L1060 130 L1160 180 L1280 140 L1440 190 L1440 280 Z" fill="rgba(255,255,255,0.018)"/>
+  <path d="M0 280 L0 255 L200 210 L360 240 L500 195 L660 230 L800 200 L960 235 L1100 205 L1260 240 L1440 215 L1440 280 Z" fill="rgba(255,255,255,0.012)"/>
+  <path d="M0 280 L1440 280 L1440 265 Q720 240 0 265 Z" fill="rgba(93,202,165,0.06)"/>
+</svg>
+
+<div class="floating-cards">
+  <div class="fcard fcard-1">
+    <div class="dot" style="background:#5DCAA5;"></div>
+    <div>
+      <div style="font-weight:500;color:#fff;font-size:12px;">Hà Nội → Đà Nẵng</div>
+      <div style="font-size:11px;margin-top:2px;">3 ngày · 12 điểm</div>
     </div>
-
-    <p class="label">Sắp ra mắt</p>
-    <h1>Website đang được<br>xây dựng</h1>
-    <p class="subtitle">Chúng tôi đang hoàn thiện mọi thứ.<br>Quay lại sớm để khám phá nhé!</p>
-
-    <div class="countdown">
-      <div class="countdown-box">
-        <div class="countdown-num" id="days">00</div>
-        <div class="countdown-label">ngày</div>
-      </div>
-      <div class="countdown-box">
-        <div class="countdown-num" id="hours">00</div>
-        <div class="countdown-label">giờ</div>
-      </div>
-      <div class="countdown-box">
-        <div class="countdown-num" id="minutes">00</div>
-        <div class="countdown-label">phút</div>
-      </div>
-      <div class="countdown-box">
-        <div class="countdown-num" id="seconds">00</div>
-        <div class="countdown-label">giây</div>
-      </div>
+  </div>
+  <div class="fcard fcard-2">
+    <svg style="width:14px;height:14px;stroke:#FAC775;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <div>
+      <div style="font-weight:500;color:#fff;font-size:12px;">Phú Quốc</div>
+      <div style="font-size:11px;margin-top:2px;">Điểm đến hot</div>
     </div>
-
-    <div class="email-row">
-      <input type="email" id="emailInput" placeholder="Email của bạn" />
-      <button onclick="handleSubscribe()">Thông báo tôi</button>
+  </div>
+  <div class="fcard fcard-3">
+    <svg style="width:14px;height:14px;stroke:#7eb8f7;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <div>
+      <div style="font-weight:500;color:#fff;font-size:12px;">Lịch trình 5 ngày</div>
+      <div style="font-size:11px;margin-top:2px;">Sài Gòn · Mũi Né</div>
     </div>
-    <p class="msg" id="msg"></p>
+  </div>
+  <div class="fcard fcard-4">
+    <svg style="width:14px;height:14px;stroke:#ED93B1;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <div>
+      <div style="font-weight:500;color:#fff;font-size:12px;">Nhóm 4 người</div>
+      <div style="font-size:11px;margin-top:2px;">Đang lên kế hoạch...</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="plane-icon">
+    <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
   </div>
 
-  <script>
-    // ✏️ Chỉnh ngày ra mắt tại đây
-    const launchDate = new Date('2025-09-01T00:00:00');
+  <div class="badge">
+    <div class="badge-dot"></div>
+    Đang phát triển
+  </div>
 
-    function pad(n) { return String(n).padStart(2, '0'); }
+  <h1>Lên lịch trình du lịch<br><em>thông minh hơn</em></h1>
 
-    function updateCountdown() {
-      const diff = launchDate - new Date();
-      if (diff <= 0) {
-        document.querySelector('.countdown').style.display = 'none';
-        return;
-      }
-      document.getElementById('days').textContent    = pad(Math.floor(diff / 86400000));
-      document.getElementById('hours').textContent   = pad(Math.floor((diff % 86400000) / 3600000));
-      document.getElementById('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
-      document.getElementById('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
-    }
+  <p class="sub">Tạo hành trình hoàn hảo cho mọi chuyến đi — từng điểm đến, từng khoảnh khắc, không bỏ lỡ điều gì.</p>
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+  <div class="route">
+    <div class="dest">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
+      Hà Nội
+    </div>
+    <span class="arrow-r">→</span>
+    <div class="dest">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
+      Hội An
+    </div>
+    <span class="arrow-r">→</span>
+    <div class="dest">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
+      Đà Lạt
+    </div>
+    <span class="arrow-r">→</span>
+    <div class="dest" style="color:rgba(255,255,255,0.3);">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
+      + nhiều hơn
+    </div>
+  </div>
 
-    function handleSubscribe() {
-      const email = document.getElementById('emailInput').value.trim();
-      const msg = document.getElementById('msg');
-      if (!email || !email.includes('@')) {
-        msg.className = 'msg error';
-        msg.textContent = 'Vui lòng nhập email hợp lệ.';
-        return;
-      }
-      msg.className = 'msg success';
-      msg.textContent = 'Cảm ơn! Chúng tôi sẽ thông báo khi ra mắt.';
-      document.getElementById('emailInput').value = '';
-    }
-  </script>
+  <div class="countdown">
+    <div class="cbox"><div class="cnum" id="days">00</div><div class="clbl">ngày</div></div>
+    <div class="csep">:</div>
+    <div class="cbox"><div class="cnum" id="hours">00</div><div class="clbl">giờ</div></div>
+    <div class="csep">:</div>
+    <div class="cbox"><div class="cnum" id="minutes">00</div><div class="clbl">phút</div></div>
+    <div class="csep">:</div>
+    <div class="cbox"><div class="cnum" id="seconds">00</div><div class="clbl">giây</div></div>
+  </div>
+
+  <div class="features">
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Lịch trình tự động
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+      Bản đồ tích hợp
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Chia sẻ nhóm
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Tối ưu thời gian
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Lưu yêu thích
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Quản lý chi phí
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [], shooting = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    stars = Array.from({length: 150}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.4 + 0.2,
+      o: Math.random() * 0.5 + 0.1,
+      t: Math.random() * Math.PI * 2
+    }));
+  }
+
+  function spawnShooting() {
+    shooting.push({
+      x: Math.random() * canvas.width * 0.7,
+      y: Math.random() * canvas.height * 0.4,
+      len: Math.random() * 80 + 60,
+      speed: Math.random() * 6 + 4,
+      life: 1,
+      dx: Math.random() * 2 + 2,
+      dy: Math.random() * 1.5 + 1
+    });
+  }
+
+  setInterval(spawnShooting, 3500);
+
+  let raf;
+  function draw(ts) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const t = ts * 0.001;
+    stars.forEach(s => {
+      const o = s.o * (0.6 + 0.4 * Math.sin(t * 0.8 + s.t));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${o})`;
+      ctx.fill();
+    });
+    shooting = shooting.filter(s => s.life > 0);
+    shooting.forEach(s => {
+      ctx.save();
+      ctx.globalAlpha = s.life * 0.8;
+      const grd = ctx.createLinearGradient(s.x, s.y, s.x - s.len * s.dx / s.speed, s.y - s.len * s.dy / s.speed);
+      grd.addColorStop(0, 'rgba(255,255,255,0.9)');
+      grd.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.strokeStyle = grd;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(s.x - s.len * s.dx / s.speed, s.y - s.len * s.dy / s.speed);
+      ctx.stroke();
+      ctx.restore();
+      s.x += s.dx; s.y += s.dy; s.life -= 0.025;
+    });
+    raf = requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+
+  // ✏️ Chỉnh ngày ra mắt tại đây
+  const launchDate = new Date('2025-10-01T00:00:00');
+
+  function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
+
+  function tick() {
+    const diff = launchDate - new Date();
+    if (diff <= 0) { document.querySelector('.countdown').style.display = 'none'; return; }
+    document.getElementById('days').textContent    = pad(diff / 86400000);
+    document.getElementById('hours').textContent   = pad((diff % 86400000) / 3600000);
+    document.getElementById('minutes').textContent = pad((diff % 3600000) / 60000);
+    document.getElementById('seconds').textContent = pad((diff % 60000) / 1000);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>
