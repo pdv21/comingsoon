@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Sắp ra mắt</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8f8f6;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(#1a1a1a 1px, transparent 1px),
+        linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 520px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #e0e0da;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .icon-wrap svg {
+      width: 24px;
+      height: 24px;
+      stroke: #888;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: #999;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      color: #1a1a1a;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .countdown-box {
+      background: #fff;
+      border: 1px solid #e0e0da;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      min-width: 72px;
+    }
+
+    .countdown-num {
+      font-size: 28px;
+      font-weight: 500;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+
+    .countdown-label {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 4px;
+    }
+
+    .email-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #efefeb;
+      border: 1px solid #e0e0da;
+      border-radius: 12px;
+      padding: 6px 6px 6px 14px;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    .email-row input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: #1a1a1a;
+      outline: none;
+      min-width: 0;
+    }
+
+    .email-row input::placeholder { color: #aaa; }
+
+    .email-row button {
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+
+    .email-row button:hover { opacity: 0.8; }
+
+    .msg {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 0.75rem;
+      min-height: 18px;
+    }
+
+    .msg.error { color: #c0392b; }
+    .msg.success { color: #27ae60; }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 24px; }
+      .countdown-num { font-size: 22px; }
+      .countdown-box { min-width: 60px; padding: 0.75rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="container">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/>
+        <path d="M17.64 15 22 10.64"/>
+        <path d="m2 2 4.5 4.5"/>
+        <path d="M9.5 6.5 11 8"/>
+        <path d="m17 2 2 2"/>
+        <path d="m14 5 3 3"/>
+        <path d="M22 8l-7-1 1 7 2-3 3 3 2-2-3-3z"/>
+      </svg>
+    </div>
+
+    <p class="label">Sắp ra mắt</p>
+    <h1>Website đang được<br>xây dựng</h1>
+    <p class="subtitle">Chúng tôi đang hoàn thiện mọi thứ.<br>Quay lại sớm để khám phá nhé!</p>
+
+    <div class="countdown">
+      <div class="countdown-box">
+        <div class="countdown-num" id="days">00</div>
+        <div class="countdown-label">ngày</div>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-num" id="hours">00</div>
+        <div class="countdown-label">giờ</div>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-num" id="minutes">00</div>
+        <div class="countdown-label">phút</div>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-num" id="seconds">00</div>
+        <div class="countdown-label">giây</div>
+      </div>
+    </div>
+
+    <div class="email-row">
+      <input type="email" id="emailInput" placeholder="Email của bạn" />
+      <button onclick="handleSubscribe()">Thông báo tôi</button>
+    </div>
+    <p class="msg" id="msg"></p>
+  </div>
+
+  <script>
+    // ✏️ Chỉnh ngày ra mắt tại đây
+    const launchDate = new Date('2025-09-01T00:00:00');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function updateCountdown() {
+      const diff = launchDate - new Date();
+      if (diff <= 0) {
+        document.querySelector('.countdown').style.display = 'none';
+        return;
+      }
+      document.getElementById('days').textContent    = pad(Math.floor(diff / 86400000));
+      document.getElementById('hours').textContent   = pad(Math.floor((diff % 86400000) / 3600000));
+      document.getElementById('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
+      document.getElementById('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    function handleSubscribe() {
+      const email = document.getElementById('emailInput').value.trim();
+      const msg = document.getElementById('msg');
+      if (!email || !email.includes('@')) {
+        msg.className = 'msg error';
+        msg.textContent = 'Vui lòng nhập email hợp lệ.';
+        return;
+      }
+      msg.className = 'msg success';
+      msg.textContent = 'Cảm ơn! Chúng tôi sẽ thông báo khi ra mắt.';
+      document.getElementById('emailInput').value = '';
+    }
+  </script>
+</body>
+</html>
